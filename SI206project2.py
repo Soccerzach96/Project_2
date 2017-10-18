@@ -1,7 +1,7 @@
 ## SI 206 W17 - Project 2
 
 ## COMMENT HERE WITH:
-## Your name:
+## Your name: Zachary Strong
 ## Anyone you worked with on this project:
 
 ## Below we have provided import statements, comments to separate out the
@@ -27,9 +27,7 @@ from bs4 import BeautifulSoup
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 
 def find_urls(s):
-    pass
-    #Your code here
-
+    return re.findall('https?://[^\s]+', s)
 
 
 ## PART 2  - Define a function grab_headlines.
@@ -57,6 +55,8 @@ def grab_headlines():
 def get_umsi_data():
     pass
     #Your code here
+	r = requests.get(base_url, headers = {'User-Agent': 'SI_CLASS'})
+	soup = BeautifulSoup(r.text, 'html.parser')
 
 ## PART 3 (b) Define a function called num_students.
 ## INPUT: The dictionary from get_umsi_data().
