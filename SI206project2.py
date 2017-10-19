@@ -38,21 +38,80 @@ def find_urls(s):
 ## http://www.michigandaily.com/section/opinion
 
 def grab_headlines():
-    pass
     #Your code here
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
 
     address = 'http://www.michigandaily.com/section/opinion'
-    test_file = open('test.html','r')
-    html = urllib.request.urlopen(test_file, context=ctx).read()
-    soup = BeautifulSoup(html, 'html.parser')
+    r = requests.get(address)
+    soup = BeautifulSoup(r.text,'html.parser')
+
+    most_read = soup.find_all('div', {'class': 'view-id-most_read'})[0]
 
     headlines = []
-    for li in soup.find('a', {'class': 'panel-pane pane-mostread'}):
-    	headlines.append(li)
+
+    for li in most_read.find_all(class_="item-list"):
+    	headlines.append(li.text)
+
     return headlines
+    # 	if li.a:
+    # 		headline = li.a.text.replace("\n", "").strip()
+    # 	else:
+    # 		headline = li.contents[0].strip()
+    # 	headlines.append(headline)
+    # return headlines
+
+    # for headline in most_read.find_all(class_="views-field views-field-title"):
+    # 	if headline.a:
+    # 		print(headline.a.text.replace("\n", " ").strip())
+    # 	else:
+    # 		print(headline.contents[0].strip())
+
+
+	# ctx = ssl.create_default_context()
+	# ctx.check_hostname = False
+	# ctx.verify_mode = ssl.CERT_NONE
+
+	# address = 'http://www.michigandaily.com/section/opinion'
+	# html = urllib.request.urlopen(address, context=ctx).read()
+	# soup = BeautifulSoup(address, 'html.parser')
+
+	# opinion_page = soup.find_all('h2')
+
+	# print(opinion_page)
+
+	# items = soup['ol']
+	# for li in items:
+	# 	li = soup.find_all('li')
+	# 	for headlines in li:
+	# 		headlines = headlines.text
+	# 		print(headlines)
+
+
+	# for li in soup.find_all(class_='item-list'):
+	# 	print(li.text)
+
+
+    # headlines = []
+    # opinion_page = soup.find_all('h2')
+    # for li in opinion_page:
+    # 	headlines.append(li)
+    # print(headlines)
+
+
+
+
+
+    # address = 'http://www.michigandaily.com/section/opinion'
+    # html = urllib.request.urlopen(address, context=ctx).read()
+    # soup = BeautifulSoup(html, 'html.parser')
+
+    # test_file = open('opinion.html','lxml')
+    # html = test_file.read()
+    # soup = BeautifulSoup(html, 'html.parser')
+
+    # headlines = []
+    # for li in soup.find('a', {'class': 'panel-pane pane-mostread'}):
+    # 	headlines.append(li)
+    # return headlines
 
 	# headlines = []
 	# for headline in soup.find('a', {'class': 'nrcTxt_headline'}):
