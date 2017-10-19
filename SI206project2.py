@@ -14,6 +14,8 @@ import unittest
 import requests
 import re
 from bs4 import BeautifulSoup
+import urllib.request, urllib.parse, urllib.error
+import ssl
 
 
 ## Part 1 -- Define your find_urls function here.
@@ -27,7 +29,7 @@ from bs4 import BeautifulSoup
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 
 def find_urls(s):
-    return re.findall('https?://[^\s]+', s)
+	return re.findall('https?://[^\s]+\.[a-zA-Z0-9]{2,}', s)
 
 
 ## PART 2  - Define a function grab_headlines.
@@ -38,7 +40,25 @@ def find_urls(s):
 def grab_headlines():
     pass
     #Your code here
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
 
+    address = 'http://www.michigandaily.com/section/opinion'
+    test_file = open('test.html','r')
+    html = urllib.request.urlopen(test_file, context=ctx).read()
+    soup = BeautifulSoup(html, 'html.parser')
+
+    headlines = []
+    for li in soup.find('a', {'class': 'panel-pane pane-mostread'}):
+    	headlines.append(li)
+    return headlines
+
+	# headlines = []
+	# for headline in soup.find('a', {'class': 'nrcTxt_headline'}):
+	# 	url = headline.findParent('div')['id']
+	# 	headlines.append([url, headline.string])
+	# return headlines
 
 
 ## PART 3 (a) Define a function called get_umsi_data.  It should create a dictionary
@@ -55,8 +75,15 @@ def grab_headlines():
 def get_umsi_data():
     pass
     #Your code here
-	r = requests.get(base_url, headers = {'User-Agent': 'SI_CLASS'})
-	soup = BeautifulSoup(r.text, 'html.parser')
+	# r = requests.get(base_url, headers = {'User-Agent': 'SI_CLASS'})
+	# soup = BeautifulSoup(r.text, 'html.parser')
+	# list_objects = soup.findall('li')
+	
+	# umsi_titles = []
+	# for li in list_objects:
+	# 	umsi_titles.append(li)
+
+	# return umsi_titles
 
 ## PART 3 (b) Define a function called num_students.
 ## INPUT: The dictionary from get_umsi_data().
@@ -64,6 +91,12 @@ def get_umsi_data():
 def num_students(data):
     pass
     #Your code here
+    # phD_count = 0
+    # for person in data:
+    # 	if person == 'PhD':
+    # 		phD_count += 1
+
+    # return(phD_number)
 
 
 
