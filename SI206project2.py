@@ -65,13 +65,31 @@ def grab_headlines():
 ## requests.get(base_url, headers={'User-Agent': 'SI_CLASS'})
 
 def get_umsi_data():
-	umsi_titles = {}
-	count = 1
-	page_number = '&page=' + count
-	base_url = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=12'
-	while base_url != 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=12':
-		base_url += page_number
+	umsi_titles = dict()
+	count = 0
+	# base_url = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=' + str(count)
+	base_url = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All'
+	while base_url != 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=13':
+		r = requests.get(base_url, headers = {'User-Agent': 'SI_CLASS'})
+		soup = BeautifulSoup(r.text, 'html.parser')
+		d = soup.find_all('div', {'class':"view-content"})[0]
+		directory = d.find('div', {'class':"field-name-title"}).find('h2')
+		for h2 in directory:
+			print(h2)
 		count += 1
+		base_url = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=' + str(count)
+
+
+
+	# while base_url != 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=12':
+	# 	r = requests.get(base_url, headers = {'User-Agent': 'SI_CLASS'})
+	# 	soup = BeautifulSoup(r.text, 'html.parser')
+	# 	directory = soup.find('div', {'class':"view-directory"})
+	# 	for h2 in directory:
+	# 		umsi_titles['h2'] = directory.find('div', {'class':"field-item even"}).text
+	# 	base_url += page_number
+	# 	count += 1
+	# return umsi_titles
 
     #Your code here
 	# r = requests.get(base_url, headers = {'User-Agent': 'SI_CLASS'})
