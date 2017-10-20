@@ -29,6 +29,7 @@ import ssl
 ## find_urls("the internet is awesome #worldwideweb") should return [], empty list
 
 def find_urls(s):
+
 	return re.findall('https?://[^\s]+\.[a-zA-Z0-9]{2,}', s)
 
 
@@ -38,7 +39,6 @@ def find_urls(s):
 ## http://www.michigandaily.com/section/opinion
 
 def grab_headlines():
-    #Your code here
 
     address = 'http://www.michigandaily.com/section/opinion'
     r = requests.get(address)
@@ -65,7 +65,14 @@ def grab_headlines():
 ## requests.get(base_url, headers={'User-Agent': 'SI_CLASS'})
 
 def get_umsi_data():
-    pass
+	umsi_titles = {}
+	count = 1
+	page_number = '&page=' + count
+	base_url = 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=12'
+	while base_url != 'https://www.si.umich.edu/directory?field_person_firstname_value=&field_person_lastname_value=&rid=All&page=12':
+		base_url += page_number
+		count += 1
+
     #Your code here
 	# r = requests.get(base_url, headers = {'User-Agent': 'SI_CLASS'})
 	# soup = BeautifulSoup(r.text, 'html.parser')
